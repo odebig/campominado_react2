@@ -1,5 +1,5 @@
 import React from "react";
-import { BoardType, openSquare, toggleFlag } from "../util/logic";
+import { openSquare, toggleFlag, type BoardType } from "../util/logic";
 import Square from "./Square";
 
 type Props = {

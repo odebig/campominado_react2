@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createBoard, BoardType } from "../util/logic";
+import { createBoard, type BoardType } from "../util/logic";
 import Board from "../components/Board";
 
 const Home: React.FC = () => {

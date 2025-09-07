@@ -1,5 +1,5 @@
 import React from "react";
-import { SquareType } from "../util/logic";
+import { type SquareType } from "../util/logic";
 
 type Props = {
   square: SquareType;
