@@ -17,7 +17,7 @@ const Square: React.FC<Props> = ({ square, onClick, onRightClick }) => {
     <button
       onClick={onClick}
       onContextMenu={(e) => { e.preventDefault(); onRightClick(); }}
-      className="w-10 h-10 border flex items-center justify-center text-lg"
+      style={{ backgroundColor: square.state === "opened" ? "#1a1a1a" : "#888",}}
     >
       {content}
     </button>
