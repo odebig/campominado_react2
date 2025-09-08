@@ -52,16 +52,54 @@ export const createBoard = (rows: number, cols: number, mines: number): BoardTyp
   return board;
 };
 
-// Função básica para abrir uma célula
-export function openSquare(board: BoardType, row: number, col: number): BoardType {
+export type GameStatus = "playing" | "lost" | "won";
+
+export interface OpenSquareResult {
+  board: BoardType;
+  status: GameStatus;
+}
+
+export function checkWin(board: BoardType): boolean {
+  for (const row of board) {
+    for (const square of row) {
+      if (!square.hasMine && square.state !== "opened") {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+export function openSquare(board: BoardType, row: number, col: number): OpenSquareResult {
   const newBoard = board.map(r => r.map(s => ({ ...s })));
 
+  const clicked = newBoard[row][col];
+
+  // 👉 Se clicou em bomba, perdeu
+  if (clicked.hasMine) {
+    clicked.state = "opened";
+
+    // Abrir todas as bombas
+    for (let r = 0; r < newBoard.length; r++) {
+      for (let c = 0; c < newBoard[0].length; c++) {
+        if (newBoard[r][c].hasMine) {
+          newBoard[r][c].state = "opened";
+        }
+      }
+    }
+
+    return {
+      board: newBoard,
+      status: "lost",
+    };
+  }
+
+  // 👉 Caso não seja bomba, segue abrindo células
   const dfs = (r: number, c: number) => {
     const square = newBoard[r][c];
-    if (square.state !== "closed") return; 
+    if (square.state !== "closed") return;
     square.state = "opened";
 
-    // se não tem minas próximas, abre vizinhos
     if (square.nearMines === 0 && !square.hasMine) {
       for (let i = -1; i <= 1; i++) {
         for (let j = -1; j <= 1; j++) {
@@ -83,8 +121,21 @@ export function openSquare(board: BoardType, row: number, col: number): BoardTyp
 
   dfs(row, col);
 
-  return newBoard;
+  // ✅ Verifica vitória após abrir as células
+  if (checkWin(newBoard)) {
+    return {
+      board: newBoard,
+      status: "won",
+    };
+  }
+
+  return {
+    board: newBoard,
+    status: "playing",
+  };
 }
+
+
 
 // Função básica para marcar/desmarcar bandeira
 export function toggleFlag(board: BoardType, row: number, col: number): BoardType {
