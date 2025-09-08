@@ -6,3 +6,9 @@
   justify-content: center;                 
   margin: 0 auto;
 }
+
+.botao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
