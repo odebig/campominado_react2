@@ -55,10 +55,34 @@ export const createBoard = (rows: number, cols: number, mines: number): BoardTyp
 // Função básica para abrir uma célula
 export function openSquare(board: BoardType, row: number, col: number): BoardType {
   const newBoard = board.map(r => r.map(s => ({ ...s })));
-  const square = newBoard[row][col];
-  if (square.state === "closed") {
+
+  const dfs = (r: number, c: number) => {
+    const square = newBoard[r][c];
+    if (square.state !== "closed") return; 
     square.state = "opened";
-  }
+
+    // se não tem minas próximas, abre vizinhos
+    if (square.nearMines === 0 && !square.hasMine) {
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          const nr = r + i;
+          const nc = c + j;
+          if (
+            nr >= 0 &&
+            nr < newBoard.length &&
+            nc >= 0 &&
+            nc < newBoard[0].length &&
+            !(i === 0 && j === 0)
+          ) {
+            dfs(nr, nc);
+          }
+        }
+      }
+    }
+  };
+
+  dfs(row, col);
+
   return newBoard;
 }
 
