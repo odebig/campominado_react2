@@ -75,7 +75,6 @@ export function openSquare(board: BoardType, row: number, col: number): OpenSqua
 
   const clicked = newBoard[row][col];
 
-  // 👉 Se clicou em bomba, perdeu
   if (clicked.hasMine) {
     clicked.state = "opened";
 
@@ -94,7 +93,6 @@ export function openSquare(board: BoardType, row: number, col: number): OpenSqua
     };
   }
 
-  // 👉 Caso não seja bomba, segue abrindo células
   const dfs = (r: number, c: number) => {
     const square = newBoard[r][c];
     if (square.state !== "closed") return;
@@ -121,7 +119,6 @@ export function openSquare(board: BoardType, row: number, col: number): OpenSqua
 
   dfs(row, col);
 
-  // ✅ Verifica vitória após abrir as células
   if (checkWin(newBoard)) {
     return {
       board: newBoard,
@@ -134,8 +131,6 @@ export function openSquare(board: BoardType, row: number, col: number): OpenSqua
     status: "playing",
   };
 }
-
-
 
 // Função básica para marcar/desmarcar bandeira
 export function toggleFlag(board: BoardType, row: number, col: number): BoardType {
