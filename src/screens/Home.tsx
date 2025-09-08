@@ -17,7 +17,7 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <h1>Campo Minado</h1>
+      <h1>Campo Minado 💣</h1>
       {status === "lost" && <p>💥 Você perdeu! Clique em reiniciar.</p>}
       {status === "won" && <p>🎉 Você venceu! Clique em reiniciar para jogar de novo.</p>}
       <Board
@@ -25,6 +25,7 @@ const Home: React.FC = () => {
         setBoard={setBoard}
         setStatus={setStatus}
         onReset={resetGame}
+        status={status}
       />
     </div>
   );
